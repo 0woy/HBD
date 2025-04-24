@@ -97,8 +97,106 @@ document.addEventListener('DOMContentLoaded', function () {
     countdownElement.innerHTML = `입장까지 남은 시간: ${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
   }
 
+  // 퀴즈 데이터
+  const quizData = [
+    {
+      question: '지은이는 물복 vs 딱복?',
+      correctAnswer: '물복',
+    },
+    {
+      question: '지으니의 반려견인 두리의 별명은?\n(힌트: O두리O)',
+      correctAnswer: '닭두리탕',
+    },
+    {
+      question: '메가커피시절 지은이를 놀라게 한 동물의 은어는?',
+      correctAnswer: '라따뚜이',
+    },
+  ];
+
+  // 현재 퀴즈 인덱스
+  let currentQuizIndex = 0;
+
+  // 퀴즈 표시 함수
+  function showQuiz() {
+    // 모달이 이미 있는지 확인하고 제거
+    const existingModal = document.querySelector('.quiz-modal');
+    if (existingModal) {
+      document.body.removeChild(existingModal);
+    }
+
+    const quiz = quizData[currentQuizIndex];
+
+    // 퀴즈 모달 생성
+    const quizModal = document.createElement('div');
+    quizModal.classList.add('quiz-modal');
+
+    let quizHTML = `
+      <div class="quiz-container">
+        <h2>입장 퀴즈 (${currentQuizIndex + 1}/${quizData.length})</h2>
+        <p class="quiz-question">${quiz.question}</p>
+        <div class="quiz-answer">
+          <input type="text" id="quizAnswer" placeholder="답을 입력하세요">
+        </div>
+        <button id="submitQuiz">제출하기</button>
+      </div>
+    `;
+
+    quizModal.innerHTML = quizHTML;
+    document.body.appendChild(quizModal);
+
+    // 엔터 키 입력 시 제출
+    document
+      .getElementById('quizAnswer')
+      .addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+          checkAnswer();
+        }
+      });
+
+    // 입력란에 포커스
+    document.getElementById('quizAnswer').focus();
+
+    // 제출 버튼 이벤트 추가
+    document
+      .getElementById('submitQuiz')
+      .addEventListener('click', checkAnswer);
+
+    // 정답 체크 함수
+    function checkAnswer() {
+      const userAnswer = document.getElementById('quizAnswer').value.trim();
+
+      if (!userAnswer) {
+        alert('답을 입력해주세요!');
+        return;
+      }
+
+      if (userAnswer === quiz.correctAnswer) {
+        currentQuizIndex++;
+
+        if (currentQuizIndex < quizData.length) {
+          // 다음 퀴즈로 진행
+          alert('정답입니다! 다음 문제로 넘어갑니다.');
+          showQuiz();
+        } else {
+          // 모든 퀴즈를 맞췄을 때
+          alert('모든 문제를 맞혔습니다! 축하 페이지로 이동합니다.');
+          document.body.removeChild(quizModal);
+          window.location.href = 'celebration.html';
+
+          // 나중을 위해 인덱스 초기화
+          currentQuizIndex = 0;
+        }
+      } else {
+        alert('틀렸습니다. 다시 시도해주세요!');
+        document.getElementById('quizAnswer').value = '';
+        document.getElementById('quizAnswer').focus();
+      }
+    }
+  }
+
   // Add click event to the button
   enterButton.addEventListener('click', function () {
-    window.location.href = 'celebration.html';
+    currentQuizIndex = 0; // 퀴즈 인덱스 초기화
+    showQuiz();
   });
 });
