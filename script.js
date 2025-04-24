@@ -113,6 +113,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Calculate remaining time
+    // ... existing code ...
+    // Calculate remaining time
     const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
     const hours = Math.floor(
       (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
@@ -122,8 +124,15 @@ document.addEventListener('DOMContentLoaded', function () {
     );
     const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
+    // Build countdown string, only showing non-zero values
+    let countdownString = '입장까지 남은 시간: ';
+    if (days > 0) countdownString += `${days}일 `;
+    if (hours > 0) countdownString += `${hours}시간 `;
+    if (minutes > 0) countdownString += `${minutes}분 `;
+    if (seconds > 0) countdownString += `${seconds}초`;
+
     // Update countdown display
-    countdownElement.innerHTML = `입장까지 남은 시간: ${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
+    countdownElement.innerHTML = countdownString;
   }
 
   // 퀴즈 데이터
