@@ -84,16 +84,64 @@ document.addEventListener('DOMContentLoaded', function () {
   const targetDate = new Date('2025-05-18T00:00:00');
 
   // Toggle food menu
-  toggleFoodMenu.addEventListener('click', function () {
-    foodList.classList.toggle('open');
-    toggleFoodMenu.classList.toggle('active');
+  function setupFoodMenuToggle() {
+    const toggleFoodMenu = document.getElementById('toggleFoodMenu');
+    const foodList = document.getElementById('foodList');
 
-    if (foodList.classList.contains('open')) {
-      toggleFoodMenu.textContent = '준비된 음식 접기 -';
-    } else {
-      toggleFoodMenu.textContent = '준비된 음식 보기 +';
+    if (!toggleFoodMenu || !foodList) {
+      console.error('Food menu elements not found');
+      return;
     }
-  });
+
+    // 초기 상태 설정
+    foodList.classList.remove('open');
+    toggleFoodMenu.classList.remove('active');
+    toggleFoodMenu.textContent = '준비된 음식 보기 +';
+
+    // 클릭 이벤트 리스너
+    toggleFoodMenu.addEventListener('click', function () {
+      foodList.classList.toggle('open');
+      toggleFoodMenu.classList.toggle('active');
+
+      if (foodList.classList.contains('open')) {
+        toggleFoodMenu.textContent = '준비된 음식 접기 -';
+      } else {
+        toggleFoodMenu.textContent = '준비된 음식 보기 +';
+      }
+    });
+
+    // 터치 이벤트 리스너 (모바일 최적화)
+    if ('ontouchstart' in window) {
+      toggleFoodMenu.addEventListener(
+        'touchstart',
+        function (e) {
+          e.preventDefault();
+          this.classList.add('touch-active');
+        },
+        { passive: false }
+      );
+
+      toggleFoodMenu.addEventListener(
+        'touchend',
+        function (e) {
+          e.preventDefault();
+          this.classList.remove('touch-active');
+          foodList.classList.toggle('open');
+          toggleFoodMenu.classList.toggle('active');
+
+          if (foodList.classList.contains('open')) {
+            toggleFoodMenu.textContent = '준비된 음식 접기 -';
+          } else {
+            toggleFoodMenu.textContent = '준비된 음식 보기 +';
+          }
+        },
+        { passive: false }
+      );
+    }
+  }
+
+  // DOMContentLoaded 이벤트에서 함수 호출
+  setupFoodMenuToggle();
 
   // Update countdown every second
   const countdownInterval = setInterval(updateCountdown, 1000);
@@ -282,32 +330,5 @@ document.addEventListener('DOMContentLoaded', function () {
         showQuiz();
       }
     });
-  }
-
-  // 터치 최적화 - 음식 메뉴 토글 버튼
-  if ('ontouchstart' in window) {
-    toggleFoodMenu.addEventListener(
-      'touchstart',
-      function (e) {
-        this.classList.add('touch-active');
-      },
-      { passive: true }
-    );
-
-    toggleFoodMenu.addEventListener('touchend', function () {
-      this.classList.remove('touch-active');
-      toggleFoodMenuFunction();
-    });
-
-    function toggleFoodMenuFunction() {
-      foodList.classList.toggle('open');
-      toggleFoodMenu.classList.toggle('active');
-
-      if (foodList.classList.contains('open')) {
-        toggleFoodMenu.textContent = '준비된 음식 접기 -';
-      } else {
-        toggleFoodMenu.textContent = '준비된 음식 보기 +';
-      }
-    }
   }
 });
