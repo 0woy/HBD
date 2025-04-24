@@ -5,6 +5,14 @@ document.addEventListener('DOMContentLoaded', function () {
     '(prefers-reduced-motion: reduce)'
   ).matches;
 
+  // 두리 대화 관련 전역 변수
+  let duriDialogueIndex = {
+    1: 0,
+    2: 0,
+    3: 0,
+  };
+  let currentActiveDuri = null;
+
   // Confetti 설정 초기화 - 라이브러리 로딩 확인 후 실행
   if (typeof ConfettiGenerator !== 'undefined') {
     initConfetti();
@@ -14,6 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 이미지 오류 처리
   handleImageErrors();
+
+  // 두리 대화 버튼 클릭 이벤트 설정
+  setupDuriButton();
 
   // 두리 이미지 클릭 이벤트 처리
   setupDuriInteraction();
@@ -173,6 +184,168 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // 버튼 클릭 이벤트 설정 함수
+  function setupDuriButton() {
+    const talkToDuriButton = document.getElementById('talkToDuriButton');
+    const duriInteractionContainer = document.getElementById(
+      'duriInteractionContainer'
+    );
+
+    if (!talkToDuriButton || !duriInteractionContainer) {
+      console.error('버튼 또는 대화 컨테이너 요소를 찾을 수 없습니다.');
+      return;
+    }
+
+    // 버튼에 클릭 이벤트 추가
+    talkToDuriButton.addEventListener('click', function (e) {
+      // 버튼 클릭 효과 추가
+      animateButtonClick(talkToDuriButton);
+
+      // 두리 대화 컨테이너 표시
+      toggleDuriInteraction();
+    });
+
+    // 버튼 클릭 애니메이션 효과
+    function animateButtonClick(button) {
+      button.classList.add('clicked');
+
+      // 버튼 클릭 시 폭죽 효과
+      createClickBurst(button);
+
+      setTimeout(() => {
+        button.classList.remove('clicked');
+      }, 300);
+    }
+
+    // 클릭 폭죽 효과 생성
+    function createClickBurst(button) {
+      // 버튼 위치와 크기 가져오기
+      const rect = button.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      // 폭죽 개수
+      const particleCount = isMobile ? 10 : 20;
+
+      // 폭죽 색상
+      const colors = ['#ff6b6b', '#5f3dc4', '#20c997', '#feca57'];
+
+      // 폭죽 생성
+      for (let i = 0; i < particleCount; i++) {
+        createParticle(
+          centerX,
+          centerY,
+          colors[Math.floor(Math.random() * colors.length)]
+        );
+      }
+    }
+
+    // 각 폭죽 입자 생성
+    function createParticle(x, y, color) {
+      const particle = document.createElement('div');
+      particle.className = 'click-particle';
+      document.body.appendChild(particle);
+
+      // 입자 스타일
+      particle.style.backgroundColor = color;
+      particle.style.position = 'fixed';
+      particle.style.borderRadius = '50%';
+      particle.style.width = '8px';
+      particle.style.height = '8px';
+      particle.style.pointerEvents = 'none';
+      particle.style.zIndex = '1000';
+      particle.style.opacity = '0.8';
+      particle.style.transform = 'translate(-50%, -50%)';
+      particle.style.left = `${x}px`;
+      particle.style.top = `${y}px`;
+
+      // 랜덤 각도와 거리
+      const angle = Math.random() * Math.PI * 2;
+      const distance = Math.random() * (isMobile ? 60 : 100) + 40;
+      const velocityX = Math.cos(angle) * (Math.random() * 10 + 5);
+      const velocityY = Math.sin(angle) * (Math.random() * 10 + 5);
+
+      // 애니메이션 시작
+      let posX = 0;
+      let posY = 0;
+      let opacity = 0.8;
+      let scale = 1;
+
+      function animate() {
+        if (opacity <= 0) {
+          particle.remove();
+          return;
+        }
+
+        posX += velocityX;
+        posY += velocityY;
+        opacity -= 0.02;
+        scale -= 0.01;
+
+        particle.style.transform = `translate(calc(-50% + ${posX}px), calc(-50% + ${posY}px)) scale(${scale})`;
+        particle.style.opacity = opacity;
+
+        requestAnimationFrame(animate);
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // 두리 대화 컨테이너 토글
+    function toggleDuriInteraction() {
+      // 인라인 스타일 제거 (첫 클릭 시에만 필요)
+      if (duriInteractionContainer.style.display === 'none') {
+        duriInteractionContainer.style.display = '';
+      }
+
+      // 가시성 토글
+      setTimeout(() => {
+        const isVisible = duriInteractionContainer.classList.toggle('visible');
+
+        // 대화창으로 스크롤 (모바일)
+        if (isMobile && isVisible) {
+          scrollToDialogue();
+        }
+
+        // 대화창이 접힐 때 초기 상태로 복원
+        if (!isVisible) {
+          // 대화 텍스트 초기화
+          const dialogueText = document.getElementById('dialogueText');
+          if (dialogueText) {
+            dialogueText.textContent =
+              '두리와 대화하려면 위 이미지를 클릭하세요.';
+          }
+
+          // 두리 이미지 초기화
+          const duriWrappers = document.querySelectorAll('.duri-image-wrapper');
+          duriWrappers.forEach((wrapper) => {
+            wrapper.style.transform = '';
+          });
+
+          // 대화 인덱스 초기화
+          duriDialogueIndex = {
+            1: 0,
+            2: 0,
+            3: 0,
+          };
+
+          // 현재 활성화된 두리 초기화
+          currentActiveDuri = null;
+        }
+      }, 10); // 짧은 지연 후 애니메이션 시작
+    }
+
+    // 모바일 대화창으로 스크롤
+    function scrollToDialogue() {
+      setTimeout(() => {
+        duriInteractionContainer.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }, 300);
+    }
+  }
+
   function setupDuriInteraction() {
     // 이미지 래퍼 요소에 직접 이벤트 연결
     const duriWrappers = document.querySelectorAll('.duri-image-wrapper');
@@ -239,14 +412,10 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     // 두리별 대화 인덱스 추적
-    const duriDialogueIndex = {
-      1: 0,
-      2: 0,
-      3: 0,
-    };
+    // duriDialogueIndex는 이미 전역으로 선언되어 있으므로 여기서 다시 선언하지 않음
 
     // 현재 활성화된 두리 추적
-    let currentActiveDuri = null;
+    // currentActiveDuri도 이미 전역으로 선언되어 있으므로 여기서 다시 선언하지 않음
 
     // 랩퍼 요소에 클릭 이벤트 리스너 추가
     duriWrappers.forEach((wrapper) => {
@@ -442,3 +611,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 1000);
   }
 });
+
+// CSS를 JS로 동적 추가 (click-particle 스타일)
+(function addParticleStyles() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .special-button.clicked {
+      transform: scale(0.95);
+    }
+    
+    .click-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1000;
+      will-change: transform, opacity;
+    }
+  `;
+  document.head.appendChild(style);
+})();
