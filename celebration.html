@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>생일 축하합니다!</title>
     <link rel="stylesheet" href="celebration.css" />
+    <!-- Confetti 라이브러리 미리 로드 -->
+    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
   </head>
   <body>
     <div class="celebration-container">
-      <div class="confetti-container" id="confetti-container"></div>
+      <div class="confetti-container" id="confetti-container">
+        <!-- Canvas는 자바스크립트에서 동적으로 생성됩니다 -->
+      </div>
       <div class="celebration-card">
         <h1>생일 축하합니다! 🎂</h1>
         <p class="message">
@@ -17,9 +21,59 @@
         <div class="heart-animation">❤️</div>
         <div class="cake">🎂</div>
         <p class="wishes">항상 행복하고 건강하게 지내길 바랍니다</p>
+
+        <!-- 두리 이미지 섹션 추가 -->
+        <div class="duri-images-container">
+          <h3>두리와 대화하기</h3>
+          <p class="duri-instruction">
+            오늘 단 하루 두리가 말을 할 수 있게 됐어요!
+          </p>
+          <div class="duri-images">
+            <!-- 이모지 대신 다시 이미지로 변경 -->
+            <div class="duri-image-wrapper" data-duri="1">
+              <img
+                src="duri1.jpg"
+                alt="두리1"
+                class="duri-image"
+                onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'duri-fallback\'>🐶</div>';"
+              />
+            </div>
+            <div class="duri-image-wrapper" data-duri="2">
+              <img
+                src="duri2.jpg"
+                alt="두리2"
+                class="duri-image"
+                onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'duri-fallback\'>🐕</div>';"
+              />
+            </div>
+            <div class="duri-image-wrapper" data-duri="3">
+              <img
+                src="duri3.jpg"
+                alt="두리3"
+                class="duri-image"
+                onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'duri-fallback\'>🦮</div>';"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- 대화창 영역 추가 -->
+        <div class="dialogue-container" id="dialogueContainer">
+          <div class="dialogue-box">
+            <p id="dialogueText">두리와 대화하려면 위 이미지를 클릭하세요.</p>
+          </div>
+        </div>
+
+        <!-- 물품 인벤토리 영역 추가 -->
+        <div class="inventory-container" id="inventoryContainer">
+          <div class="inventory-title">🎁 획득한 물품 목록</div>
+          <div class="inventory-items" id="inventoryItems">
+            <!-- JavaScript에서 동적으로 물품이 추가됩니다 -->
+          </div>
+        </div>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+    <!-- 자바스크립트 로딩 -->
     <script src="celebration.js"></script>
   </body>
 </html>

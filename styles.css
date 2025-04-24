@@ -301,7 +301,8 @@ button:not([disabled]) {
 
 @media (max-width: 480px) {
   .invitation-container {
-    max-width: 320px;
+    padding: 10px;
+    max-width: 100%;
   }
 
   .invitation-content {
@@ -310,19 +311,23 @@ button:not([disabled]) {
 
   h1 {
     font-size: 1.8rem;
+    margin-bottom: 20px;
   }
 
   .message {
     font-size: 1rem;
+    margin-bottom: 20px;
   }
 
   .date {
     font-size: 1.2rem;
+    margin-bottom: 20px;
   }
 
   .countdown {
-    font-size: 0.95rem;
-    padding: 12px 15px;
+    font-size: 0.9rem;
+    padding: 12px;
+    margin-bottom: 25px;
   }
 
   .food-list h3 {
@@ -334,8 +339,28 @@ button:not([disabled]) {
   }
 
   button {
-    padding: 12px 30px;
+    padding: 12px 25px;
     font-size: 1rem;
+    min-width: 200px;
+  }
+
+  .toggle-btn {
+    width: 100%;
+    padding: 12px 15px;
+  }
+
+  .food-list.open {
+    padding: 15px;
+  }
+
+  /* 터치 영역 개선 */
+  .food-list li {
+    padding: 10px 0;
+  }
+
+  button,
+  .toggle-btn {
+    touch-action: manipulation;
   }
 }
 
@@ -430,14 +455,64 @@ button:not([disabled]) {
 
 @media (max-width: 480px) {
   .quiz-container {
-    padding: 20px;
+    width: 90%;
+    padding: 20px 15px;
+    max-height: 80vh;
+    overflow-y: auto;
   }
 
   .quiz-question {
     font-size: 1rem;
+    margin-bottom: 15px;
+  }
+
+  .quiz-answer input[type='text'] {
+    font-size: 1rem;
+    padding: 10px;
+    height: 45px;
   }
 
   #submitQuiz {
-    padding: 10px 25px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+}
+
+/* 모바일에서 애니메이션 최적화 */
+@media (prefers-reduced-motion: reduce) {
+  .character {
+    animation-duration: 20s !important;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+}
+
+/* 터치스크린 최적화 */
+@media (hover: none) {
+  button:hover:not([disabled]) {
+    background-color: #4991f0;
+    transform: none;
+  }
+
+  button:active:not([disabled]) {
+    background-color: #3b7fd8;
+    transform: scale(0.98);
+  }
+
+  .toggle-btn:hover {
+    background-color: #f0f0f0;
+  }
+
+  .toggle-btn:active {
+    background-color: #e8e8e8;
   }
 }

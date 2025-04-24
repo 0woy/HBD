@@ -5,16 +5,27 @@ document.addEventListener('DOMContentLoaded', function () {
   const foodList = document.getElementById('foodList');
   const backgroundCharacters = document.getElementById('backgroundCharacters');
 
-  // 캐릭터 배경 생성
+  // 모바일 환경 확인
+  let isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  // 최적화된 캐릭터 생성
   createCharacters();
 
   // 캐릭터 생성 함수
   function createCharacters() {
     // 캐릭터 개수 설정 (화면 크기에 따라 조정)
-    const characterCount = Math.max(8, Math.floor(window.innerWidth / 100));
+    const characterCount = isMobile
+      ? Math.max(4, Math.floor(window.innerWidth / 150))
+      : Math.max(8, Math.floor(window.innerWidth / 100));
 
     // 기존 캐릭터 제거
     backgroundCharacters.innerHTML = '';
+
+    // 디바이스 환경에 최적화된 애니메이션 설정
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    const baseDuration = prefersReducedMotion ? 20 : 10 + Math.random() * 20;
 
     // 캐릭터 생성 및 추가
     for (let i = 0; i < characterCount; i++) {
@@ -25,15 +36,13 @@ document.addEventListener('DOMContentLoaded', function () {
       const leftPos = Math.random() * 100;
       character.style.left = leftPos + '%';
 
-      // 랜덤 크기 (30px ~ 80px)
-      const size = 30 + Math.random() * 50;
+      // 랜덤 크기 (모바일에서는 더 작게)
+      const size = isMobile ? 20 + Math.random() * 40 : 30 + Math.random() * 50;
       character.style.width = size + 'px';
       character.style.height = size + 'px';
 
-      // 랜덤 애니메이션 지속 시간 (10초 ~ 30초)
-      const duration = 10 + Math.random() * 20;
-
-      // 직접 애니메이션 스타일 추가
+      // 애니메이션 최적화
+      const duration = baseDuration;
       character.style.animation = `float ${duration}s linear infinite`;
 
       // 랜덤 투명도 (0.4 ~ 0.9)
@@ -48,8 +57,28 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // 윈도우 크기 변경시 캐릭터 재생성
-  window.addEventListener('resize', createCharacters);
+  // 디바운스 함수 정의
+  function debounce(func, wait) {
+    let timeout;
+    return function () {
+      const context = this;
+      const args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        func.apply(context, args);
+      }, wait);
+    };
+  }
+
+  // 윈도우 크기 변경시 캐릭터 재생성 (디바운스 적용)
+  window.addEventListener(
+    'resize',
+    debounce(function () {
+      // 모바일 상태 업데이트
+      isMobile = window.matchMedia('(max-width: 768px)').matches;
+      createCharacters();
+    }, 250)
+  );
 
   // Set the target date: May 18, 2025 at midnight
   const targetDate = new Date('2025-05-18T00:00:00');
@@ -135,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <h2>입장 퀴즈 (${currentQuizIndex + 1}/${quizData.length})</h2>
         <p class="quiz-question">${quiz.question}</p>
         <div class="quiz-answer">
-          <input type="text" id="quizAnswer" placeholder="답을 입력하세요">
+          <input type="text" id="quizAnswer" placeholder="답을 입력하세요" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
         </div>
         <button id="submitQuiz">제출하기</button>
       </div>
@@ -144,7 +173,21 @@ document.addEventListener('DOMContentLoaded', function () {
     quizModal.innerHTML = quizHTML;
     document.body.appendChild(quizModal);
 
-    // 엔터 키 입력 시 제출
+    // 입력란에 포커스 (모바일에서는 지연 적용)
+    setTimeout(() => {
+      const answerInput = document.getElementById('quizAnswer');
+      answerInput.focus();
+
+      // 모바일 키보드 최적화
+      if (isMobile) {
+        answerInput.addEventListener('blur', function () {
+          // 모바일에서 포커스 잃었을 때 자동으로 다시 포커스 주지 않음
+          // 사용자가 의도적으로 키보드를 내릴 수 있도록 허용
+        });
+      }
+    }, 300);
+
+    // 엔터 키 입력 및 터치 이벤트 처리
     document
       .getElementById('quizAnswer')
       .addEventListener('keypress', function (e) {
@@ -153,13 +196,26 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
 
-    // 입력란에 포커스
-    document.getElementById('quizAnswer').focus();
+    // 제출 버튼 이벤트 추가 - 터치 최적화
+    const submitButton = document.getElementById('submitQuiz');
 
-    // 제출 버튼 이벤트 추가
-    document
-      .getElementById('submitQuiz')
-      .addEventListener('click', checkAnswer);
+    // 터치 최적화
+    submitButton.addEventListener(
+      'touchstart',
+      function (e) {
+        e.preventDefault(); // 기본 동작 방지
+        this.classList.add('touch-active');
+      },
+      { passive: false }
+    );
+
+    submitButton.addEventListener('touchend', function () {
+      this.classList.remove('touch-active');
+      checkAnswer();
+    });
+
+    // 클릭 이벤트 (데스크톱)
+    submitButton.addEventListener('click', checkAnswer);
 
     // 정답 체크 함수
     function checkAnswer() {
@@ -194,9 +250,55 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Add click event to the button
+  // Add click and touch events to the button
   enterButton.addEventListener('click', function () {
     currentQuizIndex = 0; // 퀴즈 인덱스 초기화
     showQuiz();
   });
+
+  // 터치 최적화 - 입장 버튼
+  if ('ontouchstart' in window) {
+    enterButton.addEventListener(
+      'touchstart',
+      function (e) {
+        this.classList.add('touch-active');
+      },
+      { passive: true }
+    );
+
+    enterButton.addEventListener('touchend', function () {
+      this.classList.remove('touch-active');
+      if (!this.disabled) {
+        currentQuizIndex = 0; // 퀴즈 인덱스 초기화
+        showQuiz();
+      }
+    });
+  }
+
+  // 터치 최적화 - 음식 메뉴 토글 버튼
+  if ('ontouchstart' in window) {
+    toggleFoodMenu.addEventListener(
+      'touchstart',
+      function (e) {
+        this.classList.add('touch-active');
+      },
+      { passive: true }
+    );
+
+    toggleFoodMenu.addEventListener('touchend', function () {
+      this.classList.remove('touch-active');
+      toggleFoodMenuFunction();
+    });
+
+    function toggleFoodMenuFunction() {
+      foodList.classList.toggle('open');
+      toggleFoodMenu.classList.toggle('active');
+
+      if (foodList.classList.contains('open')) {
+        toggleFoodMenu.textContent = '준비된 음식 접기 -';
+      } else {
+        toggleFoodMenu.textContent = '준비된 음식 보기 +';
+      }
+    }
+  }
 });
