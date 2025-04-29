@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>지은이에 대해</title>
+    <link rel="stylesheet" href="celebration.css" />
+    <style>
+      .about-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      }
+
+      .about-header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .about-header h1 {
+        color: #ff6b6b;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        animation: colorChange 3s infinite;
+      }
+
+      .about-section {
+        margin-bottom: 40px;
+        padding: 20px;
+        background-color: #fff5f5;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .about-section h2 {
+        color: #5f3dc4;
+        margin-bottom: 15px;
+        font-size: 1.8rem;
+      }
+
+      .about-list {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .about-list li {
+        margin: 15px 0;
+        padding: 15px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+      }
+
+      .about-list li:hover {
+        transform: translateY(-5px);
+      }
+
+      .back-button {
+        display: block;
+        text-align: center;
+        margin-top: 30px;
+        padding: 15px 30px;
+        background: linear-gradient(135deg, #ff6b6b, #5f3dc4);
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: bold;
+        transition: transform 0.3s ease;
+      }
+
+      .back-button:hover {
+        transform: translateY(-3px);
+      }
+
+      @media (max-width: 600px) {
+        .about-container {
+          margin: 20px;
+          padding: 20px;
+        }
+
+        .about-header h1 {
+          font-size: 1.5rem;
+        }
+
+        .about-section h2 {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="about-container">
+      <div class="about-header">
+        <h1>내가 살펴본 지으니 👀</h1>
+      </div>
+
+      <div class="about-section">
+        <h2>좋아하는 것들</h2>
+        <ul class="about-list">
+          <li>🍰 달콤한 디저트 (특히 치즈케이크!)</li>
+          <li>🎵 감성적인 음악 듣기</li>
+          <li>📚 책 읽기 (로맨스 소설 특히 좋아해요)</li>
+          <li>☕️ 카페에서 여유로운 시간 보내기</li>
+          <li>🌸 예쁜 꽃과 자연</li>
+        </ul>
+      </div>
+
+      <div class="about-section">
+        <h2>🎨 취미</h2>
+        <ul class="about-list">
+          <li>📸 사진 찍기 (특히 일상의 소소한 순간들)</li>
+          <li>✏️ 그림 그리기</li>
+          <li>🎬 영화 보기 (로맨틱 코미디가 최애!)</li>
+          <li>🍳 요리하기 (새로운 레시피 도전하는 거 좋아해요)</li>
+          <li>🚶‍♀️ 산책하기 (특히 저녁에 하는 산책)</li>
+        </ul>
+      </div>
+
+      <div class="about-section">
+        <h2>😅 싫어하는 것들</h2>
+        <ul class="about-list">
+          <li>🕷️ 벌레 (특히 거미!)</li>
+          <li>🌧️ 비 오는 날 (우산 들고 다니기 싫어해요)</li>
+          <li>🌶️ 매운 음식</li>
+          <li>😴 잠 못 자는 날</li>
+          <li>📱 전화 통화 (문자나 카톡이 더 편해요)</li>
+        </ul>
+      </div>
+
+      <a href="celebration.html" class="back-button"
+        >생일 축하 페이지로 돌아가기</a
+      >
+    </div>
+  </body>
+</html>

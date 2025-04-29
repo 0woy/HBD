@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>생일 축하합니다!</title>
+    <title>생일 축하해!</title>
     <link rel="stylesheet" href="celebration.css" />
     <!-- Confetti 라이브러리 미리 로드 -->
     <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
@@ -14,13 +14,25 @@
         <!-- Canvas는 자바스크립트에서 동적으로 생성됩니다 -->
       </div>
       <div class="celebration-card">
-        <h1>생일 축하합니다! 🎂</h1>
+        <h1>지은아 생일 축하해!</h1>
         <p class="message">
-          당신의 특별한 날을 함께 축하할 수 있어서 행복합니다
+          지은이의 생일을 곁에서 축하해 줄 수 있어서 정말 기뻐
         </p>
-        <div class="heart-animation">❤️</div>
-        <div class="cake">🎂</div>
-        <p class="wishes">항상 행복하고 건강하게 지내길 바랍니다</p>
+        <p style="color: gray">click👇🏻</p>
+        <div class="heart-animation">
+          <a href="about.html" class="cake-link">
+            <img
+              src="img/baby.jpg"
+              alt="Baby"
+              class="cake-image"
+              onerror="this.onerror=null; this.parentElement.innerHTML='🎂';"
+            />
+          </a>
+        </div>
+        <p class="wishes">
+          오늘두, 내일도, 앞으로도 <br />
+          항상 행복한 일만 가득하길 바라
+        </p>
 
         <!-- 대화하기 버튼 추가 -->
         <div class="special-button-container">
@@ -45,7 +57,7 @@
               <!-- 이모지 대신 다시 이미지로 변경 -->
               <div class="duri-image-wrapper" data-duri="1">
                 <img
-                  src="duri1.jpg"
+                  src="img/duri1.jpg"
                   alt="두리1"
                   class="duri-image"
                   onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'duri-fallback\'>🐶</div>';"
@@ -53,7 +65,7 @@
               </div>
               <div class="duri-image-wrapper" data-duri="2">
                 <img
-                  src="duri2.jpg"
+                  src="img/duri2.jpg"
                   alt="두리2"
                   class="duri-image"
                   onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'duri-fallback\'>🐕</div>';"
@@ -61,7 +73,7 @@
               </div>
               <div class="duri-image-wrapper" data-duri="3">
                 <img
-                  src="duri3.jpg"
+                  src="img/duri3.jpg"
                   alt="두리3"
                   class="duri-image"
                   onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'duri-fallback\'>🦮</div>';"

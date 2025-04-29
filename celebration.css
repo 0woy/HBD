@@ -103,7 +103,7 @@ h1 {
 .heart-animation {
   font-size: 3rem;
   margin: 20px 0;
-  animation: heartbeat 1.5s infinite;
+  animation: heartbeat 3.5s infinite;
 }
 
 @keyframes heartbeat {
@@ -124,10 +124,48 @@ h1 {
   }
 }
 
+.click-instruction {
+  color: #5f3dc4;
+  font-size: 1.2rem;
+  margin: 10px 0;
+  font-weight: 500;
+  animation: fadeInOut 2s infinite;
+  text-align: center;
+}
+
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
 .cake {
-  font-size: 5rem;
   margin: 30px 0;
   animation: floating 3s infinite ease-in-out;
+}
+
+.cake-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.cake-link {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.cake-link:hover .cake-image {
+  transform: scale(1.1);
 }
 
 @keyframes floating {

@@ -40,7 +40,7 @@ body {
   position: absolute;
   width: 60px;
   height: 60px;
-  background-image: url('안경만두.jpg');
+  background-image: url('img/안경만두.jpg');
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.8;

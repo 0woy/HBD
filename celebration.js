@@ -361,14 +361,14 @@ document.addEventListener('DOMContentLoaded', function () {
         icon: '✉️',
         name: '편지 봉투',
         duriNumber: 1, // 두리1에서 얻을 수 있음
-        dialogIndex: 5, // 여섯 번째 대화에서 얻음 (인덱스 5)
+        dialogIndex: 6, // 여섯 번째 대화에서 얻음 (인덱스 5)
       },
       {
         id: 'flower',
         icon: '💐',
         name: '꽃다발',
         duriNumber: 2, // 두리2에서 얻을 수 있음
-        dialogIndex: 4, // 다섯 번째 대화에서 얻음 (인덱스 4)
+        dialogIndex: 5, // 다섯 번째 대화에서 얻음 (인덱스 4)
       },
       {
         id: 'buds',
